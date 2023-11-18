@@ -1,60 +1,46 @@
-(function ($) {
-    "use strict";
+document.addEventListener("DOMContentLoaded", function () {
+    // Get the button, body, and project/experience details elements
+    var darkModeToggle = document.getElementById("darkModeToggle");
+    var body = document.body;
+    var projectDetails = document.querySelectorAll(".project-details");
+    var experienceDetails = document.querySelectorAll(".experience-details");
 
-    // Sticky Navbar
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 40) {
-            $('.navbar').addClass('sticky-top');
+    // Check if the dark mode preference is stored in localStorage
+    var isDarkMode = localStorage.getItem("darkMode") === "enabled";
+
+    // Set initial theme based on the user's preference
+    if (isDarkMode) {
+        body.classList.add("dark");
+    }
+
+    // Toggle dark mode on button click
+    darkModeToggle.addEventListener("click", function () {
+        // Toggle the dark mode class on the body
+        body.classList.toggle("dark");
+
+        // Update the localStorage with the user's preference
+        if (body.classList.contains("dark")) {
+            localStorage.setItem("darkMode", "enabled");
         } else {
-            $('.navbar').removeClass('sticky-top');
+            localStorage.setItem("darkMode", "disabled");
         }
     });
-    
-    // Dropdown on mouse hover
-    $(document).ready(function () {
-        function toggleNavbarMethod() {
-            if ($(window).width() > 992) {
-                $('.navbar .dropdown').on('mouseover', function () {
-                    $('.dropdown-toggle', this).trigger('click');
-                }).on('mouseout', function () {
-                    $('.dropdown-toggle', this).trigger('click').blur();
-                });
-            } else {
-                $('.navbar .dropdown').off('mouseover').off('mouseout');
-            }
-        }
-        toggleNavbarMethod();
-        $(window).resize(toggleNavbarMethod);
-    });
-    
-    
-    // Back to top button
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 100) {
-            $('.back-to-top').fadeIn('slow');
-        } else {
-            $('.back-to-top').fadeOut('slow');
-        }
-    });
-    $('.back-to-top').click(function () {
-        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
-        return false;
+
+    // Add click event listeners for project details toggling
+    projectDetails.forEach(function (project) {
+        project.addEventListener("click", function () {
+            // Toggle the visibility of project details
+            var details = project.nextElementSibling;
+            details.classList.toggle("hidden");
+        });
     });
 
-
-    // Testimonials carousel
-    $(".testimonial-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1000,
-        items: 1,
-        dots: false,
-        loop: true,
-        nav : true,
-        navText : [
-            '<i class="bi bi-arrow-left"></i>',
-            '<i class="bi bi-arrow-right"></i>'
-        ],
+    // Add click event listeners for experience details toggling
+    experienceDetails.forEach(function (experience) {
+        experience.addEventListener("click", function () {
+            // Toggle the visibility of experience details
+            var details = experience.nextElementSibling;
+            details.classList.toggle("hidden");
+        });
     });
-    
-})(jQuery);
-
+});
